@@ -2,25 +2,20 @@
 #include <SFML/Graphics.hpp>
 #ifndef ENEMIE_H
 #define ENEMIE_H
-
+#include "GameObject.h"
 using namespace std;
 using namespace sf;
 
-class Enemie : public Drawable{
-    private:
-        Sprite sprite;
-        bool active;
-        float vel;
-        int life;
-        int dist;
-        void Movement(Vector2f);
-        void Aim(Vector2f);
-    public:
-        Enemie(Vector2f,Texture&);
-        void Update(Vector2f,int);
-        Vector2f GetPosition();
-        void TakeLife();
-        int ConsultLife();
-        virtual void draw(RenderTarget&,RenderStates) const;
+class Enemie : public GameObject {
+public:
+    Enemie(sf ::Vector2f position, sf::Texture& texture);
+    void Update(sf::Vector2f playerPosition, int dist) override; // Implementación del método Update
+    sf::Vector2f GetPosition() const override; // Implementación del método GetPosition
+    virtual void draw(sf::RenderTarget&, sf::RenderStates) const override;
+
+private:
+    sf::Sprite sprite;
+    float speed;
 };
-#endif 
+
+#endif // ENEMIE_H
