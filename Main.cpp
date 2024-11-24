@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 #include "Player.h"
-#include "Bullet.h"
 #include "Enemie.h"
 #include "UISounds.h"
 #include "Menu.h"
@@ -56,26 +55,23 @@ int main() {
             view.setSize(1000, 650);
             view.setCenter(0, 0);
 
+            // Cargar texturas
             Texture playerTexture;
-            Texture enemieTexture;
+            Texture enemyTexture;
             Texture bulletTexture;
-            Texture bloodTexture;
             Texture backgroundTexture;
 
             if (!playerTexture.loadFromFile("player.png")) {
-                cout << "Error al cargar la textura" << endl;
+                cout << "Error al cargar la textura del jugador" << endl;
             }
-            if (!enemieTexture.loadFromFile("enemie.png")) {
-                cout << "Error al cargar la textura" << endl;
+            if (!enemyTexture.loadFromFile("enemy.png")) {
+                cout << "Error al cargar la textura del enemigo" << endl;
             }
             if (!bulletTexture.loadFromFile("bullet.png")) {
-                cout << "Error al cargar la textura" << endl;
-            }
-            if (!bloodTexture.loadFromFile("blood.png")) {
-                cout << "Error al cargar la textura" << endl;
+                cout << "Error al cargar la textura de la bala" << endl;
             }
             if (!backgroundTexture.loadFromFile("background.png")) {
-                cout << "Error al cargar la textura" << endl;
+                cout << "Error al cargar la textura del fondo" << endl;
             }
 
             Sprite background;
@@ -85,9 +81,8 @@ int main() {
 
             UISounds uisounds;
             Player player(playerTexture);
-            vector<GameObject*> enemies; // Usar punteros a GameObject
+            vector<Enemie*> enemies; // Usar punteros a Enemie
             vector<GameObject*> bulletsPlayer; // Usar punteros a GameObject
-            vector<pair<Sprite, float>> bloodEnemies;
             Vector2f bulletPosition;
             Vector2f playerPos;
             Vector2f enemiePos;
@@ -108,11 +103,11 @@ int main() {
                         int x = rand() % 1450 - 725; 
                         int y = rand() % 950 - 475;
                         if (!backgroundRect.contains(x, y)) {
-                            enemies.push_back(new Enemie(Vector2f(x, y), enemieTexture)); // Crear enemigos con new
+                            enemies.push_back(new Enemie(Vector2f(x, y), enemyTexture)); // Crear enemigos con new
                         }
                     }
 
-                    player.Update(window, view);
+                    player.Update(window, view); // Actualizar jugador
 
                     for (auto enemy : enemies) {
                         enemy->Update(player.GetPosition(), dist); // Llamar a Update de cada enemigo
@@ -123,40 +118,44 @@ int main() {
                     for (auto enemy : enemies) {
                         enemiePos = enemy->GetPosition();
                         IntRect enemiesRect(enemiePos.x - 10, enemiePos.y - 10, 25, 25);
-                        if (enemiesRect.intersects(playerRect)) live = false;
+                        if (enemiesRect.intersects(playerRect)) live = false; // Si colisiona con un enemigo
                     }
 
                     pair<bool, Vector2f> infoBullet = player.AnswerShoot(window);
-                    if (infoBullet.first ) {
-                        bulletsPlayer.push_back(new Bullet(Vector2f(player.GetPosition().x + infoBullet.second.x * 40, player.GetPosition().y + infoBullet.second.y * 40), infoBullet.second, player.GetRotation(), bulletTexture)); // Crear balas con new
+                    if (infoBullet.first) {
+                        bulletsPlayer.push_back(new Bullet(Vector2f(player.GetPosition().x + infoBullet.second.x * 10, player.GetPosition().y + infoBullet.second.y * 10), bulletTexture, infoBullet.second)); // Crear una nueva bala
                     }
 
                     for (auto bullet : bulletsPlayer) {
-                        bullet->Update(); // Llamar a Update de cada bala
+                        bullet->Update(); // Actualizar cada bala
                     }
 
-                    // Dibujo
-                    window.draw(background);
+                    window.clear();
+                    window.setView(view);
+                    window.draw(background); // Dibujar fondo
+                    window.draw(player); // Dibujar jugador
+
                     for (auto enemy : enemies) {
-                        window.draw(*enemy); // Dibujar cada enemigo
+                        window.draw(*enemy); // Dibujar enemigos
                     }
+
                     for (auto bullet : bulletsPlayer) {
-                        window.draw(*bullet); // Dibujar cada bala
+                        window.draw(*bullet); // Dibujar balas
                     }
-                    window.draw(player); // Dibujar al jugador
+
+                    window.display();
                 } else {
                     // Lógica para manejar el fin del juego
+                    // Aquí puedes mostrar un mensaje de "Game Over" o similar
                 }
-
-                window.display();
             }
 
             // Liberar memoria
             for (auto enemy : enemies) {
-                delete enemy;
+                delete enemy; // Liberar memoria de enemigos
             }
             for (auto bullet : bulletsPlayer) {
-                delete bullet;
+                delete bullet; // Liberar memoria de balas
             }
         }
 
