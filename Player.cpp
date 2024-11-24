@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "GameObject.h"
 
 Player::Player(sf::Texture &texture) {
     sprite.setTexture(texture);
@@ -63,6 +62,7 @@ sf::Vector2f Player::GetPosition() const {
     return sprite.getPosition();
 }
 
-void Player::draw(sf::RenderTarget &rt, sf::RenderStates rs) const {
+void Player::draw(sf::RenderTarget &rt, sf::RenderStates rs) const ```cpp
+{
     rt.draw(sprite, rs);
 }
