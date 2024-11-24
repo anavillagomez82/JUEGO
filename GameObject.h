@@ -5,7 +5,8 @@
 
 class GameObject : public sf::Drawable {
 public:
-    virtual void Update() = 0; // Método virtual puro para actualizar el objeto
+    virtual void Update(sf::RenderWindow&, sf::View&) = 0; // Método virtual puro para Player
+    virtual void Update(sf::Vector2f, int) = 0; // Método virtual puro para Enemie
     virtual sf::Vector2f GetPosition() const = 0; // Método virtual puro para obtener la posición
 };
 
