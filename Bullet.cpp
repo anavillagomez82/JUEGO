@@ -1,27 +1,21 @@
 #include "Bullet.h"
+#include "GameObject.h"
 
-Bullet::Bullet(Vector2f pos, Vector2f dire, float rot, Texture &texture){
-    dir=dire;
+Bullet::Bullet(sf::Vector2f position, sf::Vector2f direction, float rotation, sf::Texture& texture) {
     sprite.setTexture(texture);
-    sprite.setScale(0.25,0.25);
-    sprite.setOrigin(texture.getSize().x/2,texture.getSize().y/2);
-    sprite.setPosition(pos);
-    sprite.setRotation(rot);
-    vel=10;
+    sprite.setPosition(position);
+    sprite.setRotation(rotation);
+    velocity = direction * 5.0f; // Velocidad de la bala
 }
 
-void Bullet::Update(){
-    Movement();
+void Bullet::Update() {
+    sprite.move(velocity); // Mover la bala
 }
 
-void Bullet::Movement(){
-    sprite.move(dir.x*vel,dir.y*vel);
-}
-
-Vector2f Bullet::GetPosition(){
+sf::Vector2f Bullet::GetPosition() const {
     return sprite.getPosition();
 }
 
-void Bullet::draw(RenderTarget &rt, RenderStates rs) const{
-    rt.draw(sprite,rs);
+void Bullet::draw(sf::RenderTarget &rt, sf::RenderStates rs) const {
+    rt.draw(sprite, rs);
 }
