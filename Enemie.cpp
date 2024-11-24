@@ -1,5 +1,4 @@
 #include "Enemie.h"
-#include "GameObject.h"
 
 Enemie::Enemie(sf::Vector2f position, sf::Texture& texture) {
     sprite.setTexture(texture);
