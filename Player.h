@@ -1,10 +1,8 @@
-#include <bits/stdc++.h> 
-#include <SFML/Graphics.hpp>
 #ifndef PLAYER_H
 #define PLAYER_H
+
+#include <SFML/Graphics.hpp>
 #include "GameObject.h"
-using namespace std;
-using namespace sf;
 
 class Player : public GameObject {
 public:
