@@ -2,24 +2,25 @@
 #include <SFML/Graphics.hpp>
 #ifndef PLAYER_H
 #define PLAYER_H
-
+#include "GameObject.h"
 using namespace std;
 using namespace sf;
 
-class Player : public Drawable{
-    public:
-        Player(Texture&);
-        void Update(RenderWindow&,View&);
-        pair<bool,Vector2f> AnswerShoot(RenderWindow&);
-        float GetRotation();
-        Vector2f GetPosition();
-        virtual void draw(RenderTarget&,RenderStates) const;
+class Player : public GameObject {
+public:
+    Player(sf::Texture&);
+    void Update(sf::RenderWindow&, sf::View&) override; // Implementación del método Update
+    std::pair<bool, sf::Vector2f> AnswerShoot(sf::RenderWindow&);
+    float GetRotation();
+    sf::Vector2f GetPosition() const override; // Implementación del método GetPosition
+    virtual void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
-    private:
-        Sprite sprite;
-        float vel;
-        int cadence = 8;
-        void Movement(View&);
-        void Aim(RenderWindow&);
+private:
+    sf::Sprite sprite;
+    float vel;
+    int cadence = 8;
+    void Movement(sf::View&);
+    void Aim(sf::RenderWindow&);
 };
-#endif 
+
+#endif // PLAYER_H
