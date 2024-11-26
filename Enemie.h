@@ -1,19 +1,12 @@
 #ifndef ENEMIE_H
 #define ENEMIE_H
 
-#include <SFML/Graphics.hpp>
-#include "GameObject.h"
+#include "Character.h"
 
-class Enemie : public GameObject {
+class Enemie : public Character {
 public:
-    Enemie(sf::Vector2f position, sf::Texture& texture);
-    void Update(sf::Vector2f playerPosition, int dist) override; // Implementación del método Update
-    sf::Vector2f GetPosition() const override; // Implementación del método GetPosition
-    virtual void draw(sf::RenderTarget&, sf::RenderStates) const override;
-
-private:
-    sf::Sprite sprite;
-    float speed;
+    Enemie(Vector2f pos, Texture &texture);
+    void Update(Vector2f posPlayer, int dista) override; // Implementación del método
 };
 
-#endif // ENEMIE_H
+#endif
